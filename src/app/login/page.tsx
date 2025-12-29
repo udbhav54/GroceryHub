@@ -1,6 +1,5 @@
-'use client';
+"use client";
 import {
-  
   EyeIcon,
   EyeOff,
   Leaf,
@@ -8,22 +7,39 @@ import {
   Lock,
   LogIn,
   Mail,
- 
 } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import googleImage from "@/assets/google.png";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
+import { set } from "mongoose";
+import { s } from "motion/react-client";
 
 function Login() {
-  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
+  const session=useSession()
+  console.log(session)
+  const handelLogin = async(e:FormEvent)=>{
+    e.preventDefault()
+    setLoading(true)
+    try {
+      await signIn("credentials", {
+        email, password
+      })
+      setLoading(false)
+      
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-6 py-10 bg-white relative">
@@ -50,6 +66,7 @@ function Login() {
 
       {/* Form Starts Here */}
       <motion.form
+      onSubmit={handelLogin}
         initial={{
           opacity: 0,
         }}
@@ -123,7 +140,10 @@ function Login() {
         </button>
       </motion.form>
 
-      <p className="cursor-pointer text-gray-600 mt-6 text-sm flex items-center gap-1" onClick={()=>router.push("/register")}>
+      <p
+        className="cursor-pointer text-gray-600 mt-6 text-sm flex items-center gap-1"
+        onClick={() => router.push("/register")}
+      >
         Want to create an account ? <LogIn className="w-4 h-4" />
         <span className="text-green-600">Sign Up</span>
       </p>
@@ -131,4 +151,4 @@ function Login() {
   );
 }
 
-export default Login
+export default Login;

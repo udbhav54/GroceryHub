@@ -1,37 +1,47 @@
-import { ArrowLeft, EyeIcon, EyeOff, Leaf, Loader2, Lock, LogIn, Mail, User } from 'lucide-react'
-import { motion } from 'motion/react';
-import Image from 'next/image';
-import googleImage from '@/assets/google.png'
-import React, {useState} from 'react'
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import {
+  ArrowLeft,
+  EyeIcon,
+  EyeOff,
+  Leaf,
+  Loader2,
+  Lock,
+  LogIn,
+  Mail,
+  User,
+} from "lucide-react";
+import { motion } from "motion/react";
+import Image from "next/image";
+import googleImage from "@/assets/google.png";
+import React, { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 type propType = {
   previousStep: (s: number) => void;
 };
-function RegisterForm({previousStep}:propType) {
+function RegisterForm({ previousStep }: propType) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false)
-  const router = useRouter()
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-
-
-  const handelRegister=async (e:React.FormEvent)=> {
+  const handelRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
     try {
-      const result= await axios.post("/api/auth/register",{
-        name,email,password}
-      )
-      console.log(result.data)
-      setLoading(false)
+      const result = await axios.post("/api/auth/register", {
+        name,
+        email,
+        password,
+      });
+      console.log(result.data);
+      setLoading(false);
     } catch (error) {
-      console.log(error)
-      setLoading(false)
+      console.log(error);
+      setLoading(false);
     }
-  }
+  };
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-6 py-10 bg-white relative">
       <div
@@ -65,7 +75,7 @@ function RegisterForm({previousStep}:propType) {
 
       {/* Form Starts Here */}
       <motion.form
-      onSubmit={handelRegister}
+        onSubmit={handelRegister}
         initial={{
           opacity: 0,
         }}
@@ -109,46 +119,60 @@ function RegisterForm({previousStep}:propType) {
             value={password}
           />
 
-          {
-            showPassword?<EyeOff className='absolute right-3 top-3.5 w-5 h-5 text-gray-500 cursor-pointer' onClick={()=> setShowPassword(false)}/>:<EyeIcon className='absolute right-3 top-3.5 w-5 h-5 text-gray-500 cursor-pointer' onClick={()=> setShowPassword(true)}/>
-          }
-
+          {showPassword ? (
+            <EyeOff
+              className="absolute right-3 top-3.5 w-5 h-5 text-gray-500 cursor-pointer"
+              onClick={() => setShowPassword(false)}
+            />
+          ) : (
+            <EyeIcon
+              className="absolute right-3 top-3.5 w-5 h-5 text-gray-500 cursor-pointer"
+              onClick={() => setShowPassword(true)}
+            />
+          )}
         </div>
 
-      {
-        (()=>{
-          const formValidation=name!=="" && email!=="" && password!==""
-          return <button disabled={!formValidation} className={`w-full font-semibold py-3 rounded-xl transition-all duration-200 shadow-md inline-center justify-center gap-2 ${
-            formValidation
-            ?"bg-green-600 hover:bg-green-700 text-white"
-            :"bg-gray-300 text-gray-500 cursor-not-allowed"
-          }`}>
-            {loading?<Loader2 className="w-5 h-5 animate-spin"/>:"Register"}
-           
+        {(() => {
+          const formValidation = name !== "" && email !== "" && password !== "";
+          return (
+            <button
+              disabled={!formValidation}
+              className={`w-full font-semibold py-3 rounded-xl transition-all duration-200 shadow-md inline-center justify-center gap-2 ${
+                formValidation
+                  ? "bg-green-600 hover:bg-green-700 text-white"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+            >
+              {loading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                "Register"
+              )}
             </button>
-        })()
-      }
+          );
+        })()}
 
-      <div className='flex items-center gap-2 text-gray-400 text-sm mt-2'>
-        <span className='flex-1 h-px bg-gray-200'></span>
-        OR
-        <span className='flex-1 h-px bg-gray-200'></span>
-      </div>
+        <div className="flex items-center gap-2 text-gray-400 text-sm mt-2">
+          <span className="flex-1 h-px bg-gray-200"></span>
+          OR
+          <span className="flex-1 h-px bg-gray-200"></span>
+        </div>
 
-      <button className='w-full flex items-center justify-center gap-3 border border-gray-300 hover:bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200'>
-        <Image src={googleImage} width={20} height={20} alt='google'/>
-        Continue with Google
-      </button>
+        <button className="w-full flex items-center justify-center gap-3 border border-gray-300 hover:bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200">
+          <Image src={googleImage} width={20} height={20} alt="google" />
+          Continue with Google
+        </button>
+      </motion.form>
 
-      </motion.form >
-
-      <p className='cursor-pointer text-gray-600 mt-6 text-sm flex items-center gap-1' onClick={()=> router.push("/login")}>Already have an account ? <LogIn className='w-4 h-4'/>
-      <span className='text-green-600'>Sign In</span>
+      <p
+        className="cursor-pointer text-gray-600 mt-6 text-sm flex items-center gap-1"
+        onClick={() => router.push("/login")}
+      >
+        Already have an account ? <LogIn className="w-4 h-4" />
+        <span className="text-green-600">Sign In</span>
       </p>
-
-    
     </div>
   );
 }
 
-export default RegisterForm
+export default RegisterForm;
