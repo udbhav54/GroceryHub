@@ -4,6 +4,7 @@ import Image from 'next/image';
 import googleImage from '@/assets/google.png'
 import React, {useState} from 'react'
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 type propType = {
   previousStep: (s: number) => void;
 };
@@ -13,6 +14,7 @@ function RegisterForm({previousStep}:propType) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
 
 
@@ -133,15 +135,15 @@ function RegisterForm({previousStep}:propType) {
         <span className='flex-1 h-px bg-gray-200'></span>
       </div>
 
-      <button className='w-full flex items-center justify-center gap-3 border border-gray-300 hover: bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200'>
+      <button className='w-full flex items-center justify-center gap-3 border border-gray-300 hover:bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200'>
         <Image src={googleImage} width={20} height={20} alt='google'/>
         Continue with Google
       </button>
 
       </motion.form >
 
-      <p className='cursor-pointer text-gray-600 mt-6 text-sm flex items-center gap-1'>Already have an account ? <LogIn className='w-4 h-4'/>
-      <span className='text-green-600'>Sign in</span>
+      <p className='cursor-pointer text-gray-600 mt-6 text-sm flex items-center gap-1' onClick={()=> router.push("/login")}>Already have an account ? <LogIn className='w-4 h-4'/>
+      <span className='text-green-600'>Sign In</span>
       </p>
 
     
