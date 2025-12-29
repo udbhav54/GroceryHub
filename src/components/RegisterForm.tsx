@@ -1,8 +1,9 @@
-import { ArrowLeft, EyeIcon, EyeOff, Leaf, Lock, LogIn, Mail, User } from 'lucide-react'
+import { ArrowLeft, EyeIcon, EyeOff, Leaf, Loader2, Lock, LogIn, Mail, User } from 'lucide-react'
 import { motion } from 'motion/react';
 import Image from 'next/image';
 import googleImage from '@/assets/google.png'
 import React, {useState} from 'react'
+import axios from 'axios';
 type propType = {
   previousStep: (s: number) => void;
 };
@@ -11,6 +12,24 @@ function RegisterForm({previousStep}:propType) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false)
+
+
+
+  const handelRegister=async (e:React.FormEvent)=> {
+    e.preventDefault();
+    setLoading(true)
+    try {
+      const result= await axios.post("/api/auth/register",{
+        name,email,password}
+      )
+      console.log(result.data)
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    }
+  }
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-6 py-10 bg-white relative">
       <div
@@ -44,6 +63,7 @@ function RegisterForm({previousStep}:propType) {
 
       {/* Form Starts Here */}
       <motion.form
+      onSubmit={handelRegister}
         initial={{
           opacity: 0,
         }}
@@ -101,7 +121,8 @@ function RegisterForm({previousStep}:propType) {
             ?"bg-green-600 hover:bg-green-700 text-white"
             :"bg-gray-300 text-gray-500 cursor-not-allowed"
           }`}>
-            Register
+            {loading?<Loader2 className="w-5 h-5 animate-spin"/>:"Register"}
+           
             </button>
         })()
       }
