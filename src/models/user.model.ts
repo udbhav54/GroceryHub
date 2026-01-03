@@ -27,7 +27,6 @@ const userSchema = new mongoose.Schema<IUser>(
     },
     mobile: {
       type: String,
-
       required: false,
     },
     role: {
