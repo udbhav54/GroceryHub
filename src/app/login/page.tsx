@@ -24,22 +24,23 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const session=useSession()
-  console.log(session)
-  const handelLogin = async(e:FormEvent)=>{
-    e.preventDefault()
-    setLoading(true)
+  const session = useSession();
+  console.log(session);
+  const handelLogin = async (e: FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
     try {
       await signIn("credentials", {
-        email, password
-      })
-      setLoading(false)
-      
+        email,
+        password,
+      });
+      router.push("/");
+      setLoading(false);
     } catch (error) {
-      console.log(error)
-      setLoading(false)
+      console.log(error);
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-6 py-10 bg-white relative">
@@ -66,7 +67,7 @@ function Login() {
 
       {/* Form Starts Here */}
       <motion.form
-      onSubmit={handelLogin}
+        onSubmit={handelLogin}
         initial={{
           opacity: 0,
         }}
@@ -133,11 +134,13 @@ function Login() {
           OR
           <span className="flex-1 h-px bg-gray-200"></span>
         </div>
-
-        <button className="w-full flex items-center justify-center gap-3 border border-gray-300 hover:bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200" onClick={()=>signIn("google")}>
+        <div
+          className="w-full flex items-center justify-center gap-3 border border-gray-300 hover:bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200"
+          onClick={() => signIn("google", { callbackUrl: "/" })}
+        >
           <Image src={googleImage} width={20} height={20} alt="google" />
           Continue with Google
-        </button>
+        </div>
       </motion.form>
 
       <p

@@ -7,7 +7,7 @@ interface IUser {
   password?: string;
   mobile?: string;
   role: "user" | "deliveryBoy" | "admin";
-  image?: string
+  image?: string;
 }
 
 const userSchema = new mongoose.Schema<IUser>(
@@ -32,17 +32,15 @@ const userSchema = new mongoose.Schema<IUser>(
     },
     role: {
       type: String,
-      enum:["user", "deliveryBoy", "admin"],
-      default: "user"
+      enum: ["user", "deliveryBoy", "admin"],
+      default: "user",
     },
-    image:{
-      type:String,
-    }
+    image: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
 
-const User = mongoose.models.User || mongoose.model("User", userSchema)
-export default User
-
-
+const User = mongoose.models.User || mongoose.model("User", userSchema);
+export default User;
