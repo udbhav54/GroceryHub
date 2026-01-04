@@ -4,6 +4,7 @@ import User from "@/models/user.model";
 import { redirect } from "next/navigation";
 import EditRoleMobile from "@/components/EditRoleMobile";
 import React from "react";
+import Nav from "@/components/Nav";
 
 async function Home() {
   await connectDb();
@@ -24,7 +25,9 @@ async function Home() {
 
   return (
     <div>
-      
+      <>
+        <Nav user={user}/>
+      </>
     </div>
   )
 }
